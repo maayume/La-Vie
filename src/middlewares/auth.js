@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 const { verify } = require("jsonwebtoken");
 const secret = require("../configs/secret");
+=======
+>>>>>>> b80e4665565cec77dd24659193679b11f9626a06
 const { Psicologo } = require("../models");
 
 module.exports = async (req, res, next) => {

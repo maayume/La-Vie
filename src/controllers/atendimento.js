@@ -17,6 +17,7 @@ const AtendimentoController = {
 
     if (paciente) {
       const novoAtendimento = await Atendimento.create({
+        psicologo_id: req.auth.id,
         paciente_id,
         data_atendimento,
         observacao,
