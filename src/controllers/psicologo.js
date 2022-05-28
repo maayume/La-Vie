@@ -1,9 +1,11 @@
 const { Psicologo } = require("../models");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 const PsicologoController = {
   index: async (req, res) => {
-    const allPsicologos = await Psicologo.findAll();
+    const allPsicologos = await Psicologo.findAll({
+      attributes: ["id", "nome", "email", "apresentacao"],
+    });
 
     res.json(allPsicologos);
   },
@@ -28,9 +30,15 @@ const PsicologoController = {
 
     const novaSenha = bcrypt.hashSync(senha, 10);
 
+    const psicologoExistente = await Psicologo.findOne({
+      where: { email: email.toLowerCase() },
+    });
+    if (psicologoExistente) {
+      return res.status(400).json({ message: "Psicologo já cadastrado" });
+    }
     const novoPsicologo = await Psicologo.create({
       nome,
-      email,
+      email: email.toLowerCase(),
       senha: novaSenha,
       apresentacao,
     });

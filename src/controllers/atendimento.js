@@ -2,24 +2,29 @@ const { Atendimento, Paciente, Psicologo } = require("../models");
 
 const AtendimentoController = {
   index: async (req, res) => {
-    const allAtendimentos = await Atendimento.findAll({attributes: ["id", "psicologo_id", "data_atendimento", "observacao"], include: Paciente});
+    const allAtendimentos = await Atendimento.findAll({
+      attributes: ["id", "psicologo_id", "data_atendimento", "observacao"],
+      include: Paciente,
+    });
 
     res.status(200).json(allAtendimentos);
   },
   store: async (req, res) => {
+
     const { paciente_id, data_atendimento, observacao = [] } = req.body;
-    const paciente = await Paciente.count({ where: { id: paciente_id }});
+    const paciente = await Paciente.count({ where: { id: paciente_id } });
+    const psicologo_id = req.auth.id;
 
     if (paciente) {
       const novoAtendimento = await Atendimento.create({
         paciente_id,
         data_atendimento,
         observacao,
+        psicologo_id,
       });
-  
+
       res.status(201).json(novoAtendimento);
     }
-    
   },
   show: async (req, res) => {
     //Falta criar a exceção para a senha não aparecer

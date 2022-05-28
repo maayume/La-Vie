@@ -1,5 +1,5 @@
 const { validate, Joi } = require("express-validation");
-
+// import {validate, Joi } from "express-validation";
 module.exports = validate({
     body: Joi.object({
         email: Joi.string().email().required(),
